@@ -14,14 +14,14 @@ def photo_path(instance, filename):
     return '{}/{}/{}.{}'.format(strftime('post/%Y/%m/%d/'), instance.author.username, pid, extension)
 
 class Post(models.Model):
-    author = models.ForeignKye(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     photo = ProcessedImageField(upload_to=photo_path,
                                processors=[ResizeToFill(600,600)],
                                format='JPEG',
                                options={'quality': 90})
     content = models.CharField(max_length=140, help_text='최대 140자 입력 가능')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DataTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['-created_at']
