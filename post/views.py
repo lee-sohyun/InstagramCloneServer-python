@@ -30,7 +30,6 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            #post.tag_save()
             messages.info(request, '새 글이 등록되었습니다')
             return redirect('post:post_list')
     else:
@@ -46,9 +45,26 @@ def post_edit(request, pk):
     if post.author != request.user:
         messages.warning(request, '잘못된 접근입니다')
         return redirect('post:post_list')
-    
+
     if request.methoid == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
-            messages
+            messages.success(request, '수정완료')
+            return redirect('post:post_list')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'post/post_edit.html', {
+        'post': post,
+        'form': form,
+    })
+
+
+@login_required
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.author != request.user or request.method != 'POST':
+        messages.warning(request, '잘못된 접근입니다')
+    else:
+        post.delete()
+    return redirect('post:post_list')
