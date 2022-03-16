@@ -1,0 +1,23 @@
+{
+  "name": "instagramcloneserver",
+  "version": "1.0.0",
+  "description": "Javascript/python을 사용하는 Instagram Clone Coding 프로젝트",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lee-sohyun/InstagramCloneServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lee-sohyun/InstagramCloneServer/issues"
+  },
+  "homepage": "https://github.com/lee-sohyun/InstagramCloneServer#readme",
+  "dependencies": {
+    "jsdom-global": "^3.0.2",
+    "mocha-jsdom": "2.0.0"
+  }
+}
