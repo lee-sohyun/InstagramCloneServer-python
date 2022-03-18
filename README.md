@@ -1,5 +1,5 @@
 ## InstagramCloneServer
-Javascript/python을 사용하는 Instagram Clone Coding 프로젝트입니다
+python을 사용하는 Instagram Clone Coding 프로젝트입니다
 
 
 ### Getting Started
