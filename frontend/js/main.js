@@ -58,6 +58,50 @@ function deligationFunc (e) {
     console.log("공유야!");
   } else if (elem.matches('[data-name="more"]')) {
     console.log("더보기야!");
+  } else if (elem.matches('[data-name="comment"]')) {
+    let content = document.querySelector('#add-comment-post37 > input[type=text]').value;
+    console.log(content);
+
+    if (content.length > 140) {
+      alert('댓글은 최대 140자 입력 가능합니다. 현재 글자수: ' + content.length);
+      return;
+    }
+
+    $.ajax({
+      Method: 'POST',
+      url: './comment.html',
+      data: {
+        'pk': 37,
+        'content': content,
+      },
+      dataType: 'html',
+      success: function(data) {
+        document.querySelector('#comment-list-ajax-post37').insertAdjacentHTML('afterbegin', data);
+      },
+      error: function(request, status, error) {
+        alert('문제가 발생하였습니다');
+      }
+    });
+    document.querySelector('#add-comment-post37>input[type=text]').value = '';
+  } else if (elem.matches('[data-name="comment_delete"]')) {
+    $.ajax({
+      Method: 'POST',
+      url: 'data/delete.json',
+      data: {
+        'pk': 37,
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (response.status) {
+          let comment = document.querySelector('.comment-detail');
+          comment.remove();
+        }
+      },
+      error: function(request, status, error) {
+        alert('문제가 발생했습니다');
+        window.location.replace('https://www.naver.com');
+      }
+    })
   }
   elem.classList.toggle('on');
 }
