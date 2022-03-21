@@ -17,8 +17,8 @@ class LikeInline(admin.TabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'post', 'user', 'created_at']
-    list_display_links = ['author', 'post', 'user']
+    list_display = ['id', 'author', 'nickname', 'content', 'created_at']
+    list_display_links = ['author', 'nickname', 'content']
     form = PostForm
     inlines = [LikeInline]
 

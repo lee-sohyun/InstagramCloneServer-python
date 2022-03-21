@@ -1,3 +1,6 @@
+import json
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -68,3 +71,41 @@ def post_delete(request, pk):
     else:
         post.delete()
     return redirect('post:post_list')
+
+@login_required
+@require_POST
+def post_like(request):
+    pk=request.POST.get('pk', None)
+    post = get_object_or_404(Post, pk=pk)
+    post_like, post_like_created = post.like_set.get_or_create(user=request.user)
+
+    if not post_like_created:
+        post_like.delete()
+        message = '좋아요 취소'
+    else:
+        message = '좋아요'
+
+    context = {
+        'like_count': post.like_count,
+        'message': message,
+    }
+    return HttpResponse(json.dumps(context), content_typ='application/json')
+
+@login_required
+@require_POST
+def post_bookmark(request):
+    pk=request.POST.get('pk', None)
+    post = get_object_or_404(Post, pk=pk)
+    post_bookmark, post_bookmark_created = post.like_set.get_or_create(user=request.user)
+
+    if not post_bookmark_created:
+        post_bookmark.delete()
+        message = '북마크 취소'
+    else:
+        message = '북마크'
+
+    context = {
+        'bookmark_count': post.bookmark_count,
+        'message': message,
+    }
+    return HttpResponse(json.dumps(context), content_typ='application/json')
