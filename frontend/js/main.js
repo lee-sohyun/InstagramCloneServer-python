@@ -102,6 +102,26 @@ function deligationFunc (e) {
         window.location.replace('https://www.naver.com');
       }
     })
+  } else if (elem.matches('[data-name="follow"]')) {
+    $.ajax({
+      Method: 'POST',
+      url: 'data/follow.json',
+      data: {
+        'pk': 37,
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (response.status) {
+          document.querySelector('input.follow').value = '팔로잉';
+        } else {
+          document.querySelector('input.follow').value = '팔로워';
+        }
+      },
+      error: function (request, status, error) {
+        alert('문제가 발생했습니다.');
+        window.location.replace('https://www.naver.com');
+      }
+    })
   }
   elem.classList.toggle('on');
 }
@@ -125,6 +145,9 @@ function resizeFunc() {
   }
 }
 function scrollFunc() {
+  let scrollHeight = pageYOffset+window.innerHeight;
+  let documentHeight = document.body.scrollHeight;
+
   if (pageYOffset >= 10) {
     header.classList.add('on');
     if (sidebox) sidebox.classList.add('on');
@@ -137,6 +160,40 @@ function scrollFunc() {
 
     }
   }
+
+  if (scrollHeight >= documentHeight) {
+    let page = document.querySelector('#page').value;
+    document.querySelector('#page').value = parseInt(page) + 1;
+
+    callMorePostAjax(page);
+    if (page > 5) {
+      return;
+    }
+  }
+}
+
+function callMorePostAjax(page) {
+  if (page > 5) {
+    return;
+  }
+
+  $.ajax({
+    Method: 'POST',
+    url: './post.html',
+    data: {
+      page,
+    },
+    dataType: 'html',
+    success: addMorePostAjax,
+    error: function(request, status, error) {
+      alert('문제가 발생했습니다');
+      window.location.replace('https://www.naver.com');
+    }
+  })
+}
+
+function addMorePostAjax(data) {
+  deligation.insertAdjacentHTML('beforeEnd', data);
 }
 
 setTimeout(function () {
